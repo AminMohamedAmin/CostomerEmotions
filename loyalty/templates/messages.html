@@ -1,0 +1,40 @@
+
+{%block messages%}
+
+    {%for message in messages %}
+         {%if "success" in message.tags %}
+            <div class="alert alert-success alert-dismissible show" role="alert" >
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Success!</strong> {{ message }}.
+            </div>
+         {%endif%}
+    {%endfor%}
+
+    {%for message in messages %}
+         {%if "error" in message.tags %}
+              <div class="w3-panel w3-red w3-round-xxlarge w3-padding-large" role="alert" >
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Error!</strong> {{ message }}.
+              </div>
+         {%endif%}
+    {%endfor%}
+
+    {%for message in messages %}
+         {%if "warning" in message.tags %}
+            <div class="alert alert-warning alert-dismissible show" role="alert" >
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Warning!</strong> {{ message }}.
+            </div>
+         {%endif%}
+    {%endfor%}
+
+    {%for message in messages %}
+         {%if "info" in message.tags %}
+            <div class="alert alert-info alert-dismissible show" role="alert" >
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Info!</strong> {{ message }}.
+            </div>
+         {%endif%}
+    {%endfor%}
+
+{%endblock%}

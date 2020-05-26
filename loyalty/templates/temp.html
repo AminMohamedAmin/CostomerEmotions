@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+{% load static %}
+{% load mathfilters %}
+<html>
+<title>Customer Loyalty</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<style>
+    body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+        .w3-row-padding img {margin-bottom: 12px}
+        /* Set the width of the sidebar to 120px */
+        .w3-sidebar {width: 120px;background: #222;}
+        /* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+        #main {margin-left: 120px}
+    /* Remove margins from "page content" on small screens */
+    @media only screen and (max-width: 600px) {
+        #main {margin-left: 0}}
+</style>
+<body class="w3-black">
+
+<!-- Icon Bar (Sidebar - hidden on small screens) -->
+<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
+  <!-- Avatar image in top left corner -->
+  <img src="{% static 'img/title.jpg' %}" style="width:100%">
+  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>HOME</p>
+  </a>
+  <a href="#about" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-user w3-xxlarge"></i><i class="fa fa-info-circle w3-xxlarge"></i>
+    <p>ABOUT</p>
+  </a>
+  <a href="#analyze" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-text-width w3-xxlarge"></i><i class="fa fa-file-text-o w3-xxlarge"></i>
+    <p>ANALYZE</p>
+  </a>
+  <a href="#result" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-bar-chart w3-xxlarge"></i><i class="fa fa-line-chart w3-xxlarge"></i>
+    <p>RESULT</p>
+  </a>
+</nav>
+
+<!-- Navbar on small screens (Hidden on medium and large screens) -->
+<div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
+  <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
+    <a href="#" class="w3-bar-item w3-button" style="width:25% !important">HOME</a>
+    <a href="#about" class="w3-bar-item w3-button" style="width:25% !important">ABOUT</a>
+    <a href="#analyze" class="w3-bar-item w3-button" style="width:25% !important">ANALYZE</a>
+    <a href="#result" class="w3-bar-item w3-button" style="width:25% !important">RESULT</a>
+  </div>
+</div>
+
+<!-- Page Content -->
+<div class="w3-padding-large" id="main">
+  <!-- Header/Home -->
+  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+    <p>AI</p>
+    <h1 class="w3-jumbo"><span class="w3-hide-small">Customer</span> Loyalty</h1>
+    <p>Natural Language Understanding</p>
+    <img src="{% static 'img/bround.jpg' %}" alt="boy" class="w3-image" width="992" height="1108" style="border-radius: 50%">
+  </header>
+
+  <!-- About Section -->
+  <div class="w3-content w3-justify w3-text-grey w3-padding-64" id="about">
+    <h2 class="w3-text-light-grey">Abstract</h2>
+    <hr style="width:200px" class="w3-opacity">
+    <p>Natural Language Understanding and Sentiment Analysis were combined with machine learning algorithms in the process of understanding customer’s feel</p>
+    <h6 class="w3-text-light-grey">Sentiment</h6>
+    <hr style="width:200px" class="w3-opacity">
+    <p>Customer's general feeling is positive, negative or neutral?</p>
+    <h6 class="w3-text-light-grey">Emotions</h6>
+    <hr style="width:200px" class="w3-opacity">
+    <p>Customer's personality emotions Joy, Anger, Disgust, Sadness and Fear</p>
+    <h6 class="w3-text-light-grey">Classifier</h6>
+    <hr style="width:200px" class="w3-opacity">
+    <p>Support Vector Machine SVM</p>
+    <h6 class="w3-text-light-grey">Final Result</h6>
+    <hr style="width:200px" class="w3-opacity">
+    <p>Customer's loyalty state is True or False </p>
+
+  </div>
+
+  <!-- Portfolio Section -->
+  <div class="w3-padding-64 w3-content" id="analyze">
+    <h3 class="w3-padding-16 w3-text-light-grey">Analyze Customer's text</h3>
+    <div style="text-align: center">
+        {%include 'messages.html'%}
+    </div>
+    <form method="post" enctype="multipart/form-data" action="{% url 'loyalty:extract' %}#analyze">
+        {% csrf_token %}
+        <p>Upload text file:</p>
+        <p>{{ form.file }}</p><span>{{ form.file.help_text }}</span>
+        <span><input type="submit" value="Extract Text" style="padding: 2px; margin: 2px; border-radius: 2px"></span>
+    </form>
+    <p>Or</p>
+    <h5>Put the text here (EN only) : at least 100 words </h5>
+    <form method="post" action="{% url 'loyalty:home' %}#result" style="text-align: center">
+        {% csrf_token %}
+      <textarea id="w3mission" name="text" style="width: 100%; max-width: 100%; height: 100px; max-height: 300px; border-radius: 10px" required>{{ data }}</textarea>
+      <input type="submit" value="Analyze" style="padding: 5px; margin: 5px; border-radius: 5px">
+    </form>
+  </div>
+
+    <div class="w3-padding-64 w3-content" id="analyze">
+        <div style="text-align: center">
+            {%include 'messages.html'%}
+        </div>
+        <div style="width: 25%; float: left; margin: 3%" id="result">
+            <h4>Sentiment Analysis</h4><br>
+            <p class="w3-wide">General Feeling</p>
+            <div>
+              <div style="height:28px"><p style="font-size: small">{{ sentiment_label }} feeling !</p></div>
+            </div>
+            <p class="w3-wide">Score</p>
+            <div class="w3-white" style="text-align: center">
+              <div class="w3-dark-grey" style="height:28px;width:{{ sentiment|mul:-100 }}%"><span style="color: black">{{ sentiment|mul:100|floatformat:"2" }}</span></div>
+            </div>
+        </div>
+
+        <div style="width: 30%; float: left; margin: 3%">
+            <h4>Personality Emotions</h4><br>
+            <p class="w3-wide">sad</p>
+            <div class="w3-white" style="text-align: center">
+              <div class="w3-dark-grey" style="height:28px;width:{{ sad|mul:100 }}%"><span style="color: black">{{ sad|mul:100|floatformat:"2" }}</span></div>
+            </div>
+            <p class="w3-wide">joy</p>
+            <div class="w3-white" style="text-align: center">
+                <div class="w3-dark-grey" style="height:28px;width:{{ joy|mul:100 }}%"><span style="color: black">{{ joy|mul:100|floatformat:"2" }}</span></div>
+            </div>
+            <p class="w3-wide">fear</p>
+            <div class="w3-white" style="text-align: center">
+                <div class="w3-dark-grey" style="height:28px;width:{{ fear|mul:100 }}%"><span style="color: black">{{ fear|mul:100|floatformat:"2" }}</span></div>
+            </div>
+            <p class="w3-wide">disgust</p>
+            <div class="w3-white" style="text-align: center">
+                <div class="w3-dark-grey" style="height:28px;width:{{ disgust|mul:100 }}%"><span style="color: black">{{ disgust|mul:100|floatformat:"2" }}</span></div>
+            </div>
+            <p class="w3-wide">anger</p>
+            <div class="w3-white" style="text-align: center">
+                <div class="w3-dark-grey" style="height:28px;width:{{ anger|mul:100 }}%"><span style="color: black">{{ anger|mul:100|floatformat:"2" }}</span></div>
+            </div>
+        </div>
+
+        <div style="width: 25%; float: left; margin: 3%">
+            <h4>Model Result</h4><br>
+            <p class="w3-wide">Loyalty State</p>
+            <div>
+                {% if predict == 'stay' and sentiment < 0 %}
+                    <div style="height:28px">In spite of some negative emotions, he did not reach yet to leave the place <p style="font-size: medium"> He almost will <span style="font-size: x-large">{{ predict }}</span> </p></div>
+                {% endif %}
+                {% if predict == 'leave' and sentiment < 0 %}
+                    <div style="height:28px">He has huge negative feeling, so be expect that he will leave the place at any time <p style="font-size: medium"> He almost will <span style="font-size: x-large">{{ predict }}</span> </p></div>
+                {% endif %}
+                {% if predict == 'stay' and sentiment > 0 %}
+                    <div style="height:28px">He has huge positive feeling, so be sure that he has a loyalty for the the place for a long time <p style="font-size: medium"> He almost will <span style="font-size: x-large">{{ predict }}</span> </p></div>
+                {% endif %}
+                {% if predict == 'leave' and sentiment > 0 %}
+                    <div style="height:28px">In spite of some positive emotions, he reach to leave the place soon <p style="font-size: medium"> He almost will <span style="font-size: x-large">{{ predict }}</span> </p></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+var closebtns = document.getElementsByClassName("close");
+var i;
+
+for (i = 0; i < closebtns.length; i++) {
+  closebtns[i].addEventListener("click", function() {
+    this.parentElement.style.display = 'none';
+  });
+}
+
+</script>
+</body>
+</html>
